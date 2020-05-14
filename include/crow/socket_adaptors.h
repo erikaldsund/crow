@@ -13,13 +13,14 @@ namespace crow
     {
         using context = void;
         SocketAdaptor(boost::asio::io_service& io_service, context*)
-            : socket_(io_service)
+            : socket_(io_service),
+	    io_service_(io_service)
         {
         }
 
         boost::asio::io_service& get_io_service()
         {
-            return socket_.get_io_service();
+            return io_service_;
         }
 
         tcp::socket& raw_socket()
@@ -55,6 +56,7 @@ namespace crow
         }
 
         tcp::socket socket_;
+	boost::asio::io_service& io_service_;
     };
 
 #ifdef CROW_ENABLE_SSL
@@ -63,7 +65,8 @@ namespace crow
         using context = boost::asio::ssl::context;
         using ssl_socket_t = boost::asio::ssl::stream<tcp::socket>;
         SSLAdaptor(boost::asio::io_service& io_service, context* ctx)
-            : ssl_socket_(new ssl_socket_t(io_service, *ctx))
+            : ssl_socket_(new ssl_socket_t(io_service, *ctx)),
+	    io_service_(io_service)
         {
         }
 
@@ -96,7 +99,7 @@ namespace crow
 
         boost::asio::io_service& get_io_service()
         {
-            return raw_socket().get_io_service();
+            return io_service_;
         }
 
         template <typename F> 
@@ -109,6 +112,7 @@ namespace crow
         }
 
         std::unique_ptr<boost::asio::ssl::stream<tcp::socket>> ssl_socket_;
+	boost::asio::io_service& io_service_;
     };
 #endif
 }

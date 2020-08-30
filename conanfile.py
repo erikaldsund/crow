@@ -25,3 +25,4 @@ class CrowConan(ConanFile):
 
     def package(self):
         self.copy("*.h", dst="include", src="amalgamate")
+        self.copy("*.h", dst="include", src="include")

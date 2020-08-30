@@ -4,6 +4,7 @@ from conans import ConanFile, CMake
 class CrowConan(ConanFile):
     name = "crow"
     version = "0.1"
+    description = "Fast and easy to use modern C++ micro web framework"
     url = "https://github.com/ipkn/crow"
     license = "MIT; see https://github.com/ipkn/crow/blob/master/LICENSE"
     generators = "cmake"

@@ -9,8 +9,8 @@ class CrowConan(ConanFile):
     generators = "cmake"
     settings = "os", "compiler", "build_type", "arch"
 
-    requires = (("Boost/1.60.0@lasote/stable"),
-                ("OpenSSL/1.0.2i@lasote/stable"))
+    requires = (("boost/1.71.0@conan/stable"),
+                ("OpenSSL/1.0.2s@conan/stable"))
 
     # No exports necessary
 

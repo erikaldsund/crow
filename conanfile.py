@@ -16,8 +16,7 @@ class CrowConan(ConanFile):
     # No exports necessary
 
     def source(self):
-        # this will create a hello subfolder, take it into account
-        self.run("git clone https://github.com/ipkn/crow.git")
+        self.run("git clone {}.git".format(url))
 
     def build(self):
         cmake = CMake(self.settings)

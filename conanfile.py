@@ -19,10 +19,9 @@ class CrowConan(ConanFile):
         self.run("git clone {}.git".format(url))
 
     def build(self):
-        cmake = CMake(self.settings)
-        self.run('cmake %s/crow %s' % (self.conanfile_directory, cmake.command_line))
-        self.run("cmake --build . %s" % cmake.build_config)
-        self.run("make")
+        cmake = CMake(self)
+        cmake.configure(source_folder="crow")
+        cmake.build()
 
     def package(self):
         self.copy("*.h", dst="include", src="amalgamate")

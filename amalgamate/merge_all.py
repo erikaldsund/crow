@@ -5,14 +5,25 @@ import re
 from collections import defaultdict
 import sys
 
+
+if "/" == pt.sep:
+    def path_on_os(a_path):
+        return a_path
+else:
+    def path_on_os(a_path):
+        return a_path.replace("/", pt.sep)
+
+
 header_path = "../include"
 if len(sys.argv) > 1:
     header_path = sys.argv[1]
 
+header_path = path_on_os(header_path)
+
 OUTPUT = 'crow_all.h'
 re_depends = re.compile('^#include "(.*)"', re.MULTILINE)
-headers = [x.rsplit('/', 1)[-1] for x in glob(pt.join(header_path, '*.h*'))]
-headers += ['crow/' + x.rsplit('/', 1)[-1] for x in glob(pt.join(header_path, 'crow/*.h*'))]
+headers = [pt.split(x)[-1] for x in glob(pt.join(header_path, '*.h*'))]
+headers += [pt.join('crow', pt.split(x)[-1]) for x in glob(pt.join(header_path, 'crow', '*.h*'))]
 print(headers)
 edges = defaultdict(list)
 for header in headers:
@@ -20,7 +31,7 @@ for header in headers:
     match = re_depends.findall(d)
     for m in match:
         # m should included before header
-        edges[m].append(header)
+        edges[path_on_os(m)].append(header)
 
 visited = defaultdict(bool)
 order = []
@@ -28,11 +39,14 @@ order = []
 
 def dfs(x):
     """Ensure all header files are visited."""
+    global visited
+
     visited[x] = True
     for y in edges[x]:
         if not visited[y]:
             dfs(y)
     order.append(x)
+
 
 for header in headers:
     if not visited[header]:
@@ -41,6 +55,7 @@ for header in headers:
 order = order[::-1]
 for x in edges:
     print(x, edges[x])
+
 for x in edges:
     for y in edges[x]:
         assert order.index(x) < order.index(y), 'cyclic include detected'

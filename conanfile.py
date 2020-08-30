@@ -2,7 +2,7 @@ from conans import ConanFile, CMake
 
 
 class CrowConan(ConanFile):
-    name = "Crow"
+    name = "crow"
     version = "0.1"
     url = "https://github.com/ipkn/crow"
     license = "MIT; see https://github.com/ipkn/crow/blob/master/LICENSE"

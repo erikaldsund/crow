@@ -16,7 +16,7 @@ class CrowConan(ConanFile):
     # No exports necessary
 
     def source(self):
-        self.run("git clone {}.git".format(url))
+        self.run("git clone {}.git".format(self.url))
 
     def build(self):
         cmake = CMake(self)
